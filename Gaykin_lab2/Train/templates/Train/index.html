@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Привет</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <body>
     <h1>Ну вот мы вроде все настроили и запустили</h1>
     {% load static %}
     <img src="{% static 'img/logo_nav.png' %}" alt="My image">
+    <h3> Ask a Question </h3>
+    <form action="/home" method="post">
+        <p><textarea rows="2" cols="50" name="QUEST" placeholder="Your question" readonly></textarea></p>
+        <p><input type="text" size="50" name="ADRESS" placeholder="Your email"></p>
+        <p><input type="submit" value="Send" class="btn btn-default"></p>
+    </form>
+
 </body>
 </html>
