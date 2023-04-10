@@ -28,8 +28,10 @@
     <!-- Creating form with user data -->
     <form action="/home" method="post">
         {% csrf_token %}
-        <p><textarea rows="2" cols="50" name="QUEST" placeholder="Your question" value="{{quest}}"></textarea></p>
+        <p><textarea rows="2" cols="50" name="QUEST" placeholder="Your question">{{quest}}</textarea></p>
+        <p><input type="text" size="50" name="USERNAME" placeholder="Your username" value="{{name}}"></p>
         <p><input type="text" size="50" name="ADRESS" placeholder="Your email" value="{{mail}}"></p>
+
         <p><input type="submit" value="Send" class="btn btn-default"></p>
     </form>
 

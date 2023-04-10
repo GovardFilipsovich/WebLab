@@ -18,6 +18,7 @@ class MainView(View):
         # Updates data
         context["mail"] = request.session.get('mail')
         context["quest"] = request.session.get('quest')
+        context["name"] = request.session.get('name')
 
         # Render index page
         return render(
@@ -30,17 +31,19 @@ class MainView(View):
 def my_form(request):
     mail = request.POST["ADRESS"]
     quest = request.POST["QUEST"]
+    name = request.POST["USERNAME"]
     if request.POST:
         if not re.match(r"^[a-zA-Z-_.0-9]+@[a-zA-Z-_.0-9]+\.(?=.{2,3}$)[a-z]+", mail):
             # call error message
             messages.error(request, "Invalid email")
 
-            # send to sessiona data that user enter
+            # send to session data that user entered
             request.session["mail"] = mail
             request.session["quest"] = quest
+            request.session["name"] = name
 
             # redirect to index page
             return redirect("/")
 
         # Message to user his message send successfully
-        return HttpResponse("Thanks! The answer will be sent to the mail %s" % mail)
+        return HttpResponse(f"Thanks, {name}! The answer will be sent to the mail {mail}")
