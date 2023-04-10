@@ -1,3 +1,5 @@
+import re
+
 import django.contrib.messages as messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -29,9 +31,9 @@ def my_form(request):
     mail = request.POST["ADRESS"]
     quest = request.POST["QUEST"]
     if request.POST:
-        if 1:
+        if not re.match(r"^[a-zA-Z-_.0-9]+@[a-zA-Z-_.0-9]+\.(?=.{2,3}$)[a-z]+", mail):
             # call error message
-            messages.error(request, "Error")
+            messages.error(request, "Invalid email")
 
             # send to sessiona data that user enter
             request.session["mail"] = mail
