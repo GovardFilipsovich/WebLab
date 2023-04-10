@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Привет</title>
+
+    <!-- Loading bootstrap 5 -->
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -13,10 +15,21 @@
     <img src="{% static 'img/logo_nav.png' %}" alt="My image">
     <h3> Ask a Question </h3>
 
+    <!-- Handle errors messages -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    <!-- Creating form with user data -->
     <form action="/home" method="post">
         {% csrf_token %}
-        <p><textarea rows="2" cols="50" name="QUEST" placeholder="Your question" readonly></textarea></p>
-        <p><input type="text" size="50" name="ADRESS" placeholder="Your email"></p>
+        <p><textarea rows="2" cols="50" name="QUEST" placeholder="Your question" value="{{quest}}"></textarea></p>
+        <p><input type="text" size="50" name="ADRESS" placeholder="Your email" value="{{mail}}"></p>
         <p><input type="submit" value="Send" class="btn btn-default"></p>
     </form>
 
