@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -11,3 +12,8 @@ class MainView(View):
             request,
             'Train/index.html'
         )
+
+def my_form(request):
+    if request.POST:
+        mail = request.POST["ADRESS"]
+        return HttpResponse("Thanks! The answer will be sent to the mail %s" % mail)
