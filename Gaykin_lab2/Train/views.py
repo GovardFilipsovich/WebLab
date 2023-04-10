@@ -1,3 +1,4 @@
+import datetime
 import re
 
 import django.contrib.messages as messages
@@ -32,18 +33,23 @@ def my_form(request):
     mail = request.POST["ADRESS"]
     quest = request.POST["QUEST"]
     name = request.POST["USERNAME"]
+
+    # send to session data that user entered
+    request.session["mail"] = mail
+    request.session["quest"] = quest
+    request.session["name"] = name
+
     if request.POST:
-        if not re.match(r"^[a-zA-Z-_.0-9]+@[a-zA-Z-_.0-9]+\.(?=.{2,3}$)[a-z]+", mail):
+        if not(mail and name and quest):
+            # Not all field filled error
+            messages.error(request, "Not all fileds filled")
+            return redirect("/")
+
+        elif not re.match(r"^[a-zA-Z-_.0-9]+@[a-zA-Z-_.0-9]+\.(?=.{2,3}$)[a-z]+", mail):
             # call error message
             messages.error(request, "Invalid email")
-
-            # send to session data that user entered
-            request.session["mail"] = mail
-            request.session["quest"] = quest
-            request.session["name"] = name
-
             # redirect to index page
             return redirect("/")
 
         # Message to user his message send successfully
-        return HttpResponse(f"Thanks, {name}! The answer will be sent to the mail {mail}")
+        return HttpResponse(f"Thanks, {name}! The answer will be sent to the mail {mail}. Access Date: {datetime.date.today()}")
