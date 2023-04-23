@@ -1,4 +1,5 @@
 import datetime
+import pdb
 import re
 
 import django.contrib.messages as messages
@@ -28,8 +29,10 @@ class MainView(View):
             context
         )
 
-
+data = {}
 def my_form(request):
+    data[request.POST["ADRESS"]] = request.POST["QUEST"]
+    pdb.set_trace()
     mail = request.POST["ADRESS"]
     quest = request.POST["QUEST"]
     name = request.POST["USERNAME"]
