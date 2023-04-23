@@ -31,7 +31,7 @@ class MainView(View):
 
 data = {}
 def my_form(request):
-    data[request.POST["ADRESS"]] = request.POST["QUEST"]
+    data[request.POST["ADRESS"]] = [request.POST["USERNAME"], request.POST["QUEST"]]
     pdb.set_trace()
     mail = request.POST["ADRESS"]
     quest = request.POST["QUEST"]
