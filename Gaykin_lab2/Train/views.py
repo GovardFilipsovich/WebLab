@@ -1,4 +1,6 @@
 import datetime
+import json
+import os
 import pdb
 import re
 
@@ -29,10 +31,8 @@ class MainView(View):
             context
         )
 
-data = {}
 def my_form(request):
-    data[request.POST["ADRESS"]] = [request.POST["USERNAME"], request.POST["QUEST"]]
-    pdb.set_trace()
+    data = {}
     mail = request.POST["ADRESS"]
     quest = request.POST["QUEST"]
     name = request.POST["USERNAME"]
@@ -53,6 +53,35 @@ def my_form(request):
             messages.error(request, "Invalid email")
             # redirect to index page
             return redirect("/")
+        elif len(quest) < 3:
+            # too short question
+            messages.error(request, "Too short question")
+            return redirect("/")
+        elif not re.search('[a-zA-Z]', quest):
+            # don't contains letters
+            messages.error(request, "Question must contain letters")
+            return redirect("/")
+
+        # Check if file exists
+        if os.path.exists('./Train/static/json/data.json') and os.stat("./Train/static/json/data.json").st_size != 0:
+            # if so add data to file
+            with open('./Train/static/json/data.json', 'r') as json_file:
+                data = json.load(json_file)
+            with open('./Train/static/json/data.json', 'w') as json_file:
+                # Check if mail in dict
+                if(mail in data.keys()):
+                    if quest not in data[mail]:
+                        data[mail].append(quest)
+                else:
+                    data[mail] = [name, quest]
+                json.dump(data, json_file)
+        else:
+            # else create file
+            if not os.path.exists('./Train/static/json/data.json'):
+                os.mkdir('./Train/static/json/')
+            with open('./Train/static/json/data.json', 'w') as file:
+                data[mail] = [name, quest]
+                json.dump(data, file)
 
         # Message to user his message send successfully
         return HttpResponse(f"Thanks, {name}! The answer will be sent to the mail {mail}. Access Date: {datetime.date.today()}")
