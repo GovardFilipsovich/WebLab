@@ -13,6 +13,7 @@ from django.shortcuts import render
 from django.views import View
 
 
+
 class MainView(View):
 
     def get(self, request, *args, **kwargs):
@@ -47,7 +48,6 @@ def my_form(request):
             # Not all field filled error
             messages.error(request, "Not all fileds filled")
             return redirect("/")
-
         elif not re.match(r"^[a-zA-Z-_.0-9]+@[a-zA-Z-_.0-9]+\.(?=.{2,3}$)[a-z]+", mail):
             # call error message
             messages.error(request, "Invalid email")
