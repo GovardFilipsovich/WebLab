@@ -12,7 +12,8 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render
 from django.views import View
 
-
+# Import module with mail matching
+from .myform_mail.myform_mail import match_mail
 
 class MainView(View):
 
@@ -48,7 +49,7 @@ def my_form(request):
             # Not all field filled error
             messages.error(request, "Not all fileds filled")
             return redirect("/")
-        elif not re.match(r"^[a-zA-Z-_.0-9]+@[a-zA-Z-_.0-9]+\.(?=.{2,3}$)[a-z]+", mail):
+        elif not match_mail(mail):
             # call error message
             messages.error(request, "Invalid email")
             # redirect to index page
